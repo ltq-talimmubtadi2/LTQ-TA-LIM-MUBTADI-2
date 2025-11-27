@@ -1,0 +1,1963 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LTQ TA'LIM MUBTADI 2 - Lembaga Tahfidz dan Pembelajaran Al-Qur'an untuk Pemula">
+    <meta name="keywords" content="LTQ, Tahfidz, Al-Qur'an, Pendidikan Islam, TPQ, Mengaji, ltq talim mubtadi 2">
+    <meta name="author" content="LTQ TA'LIM MUBTADI 2">
+    <title>LTQ TA'LIM MUBTADI 2 | Lembaga Tahfidz Al-Qur'an</title>
+    
+    <!-- Favicon dengan logo.png -->
+    <link rel="icon" href="Adobe Express - file.png" type="image/png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- GSAP Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-color: #1a5f7a;
+            --secondary-color: #159895;
+            --accent-color: #57c5b6;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --gold-color: #d4af37;
+            --green-color: #2e8b57;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Loading Screen dengan Video Intro Fullscreen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        #intro-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .skip-button {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            background-color: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            z-index: 10000;
+        }
+        
+        .skip-button:hover {
+            background-color: white;
+            color: black;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .nav-logo-img {
+            height: 50px;
+            margin-right: 12px;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-left: 20px;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-link i {
+            margin-right: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        .bar {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+        
+        /* Mobile Menu dengan Gooey Effect */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            z-index: 999;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            display: flex;
+            flex-direction: column;
+            padding: 100px 30px 30px;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+        
+        .mobile-menu.active {
+            right: 0;
+        }
+        
+        .mobile-menu::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            filter: blur(20px);
+            z-index: -1;
+        }
+        
+        .mobile-menu::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            left: -50px;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            filter: blur(20px);
+            z-index: -1;
+        }
+        
+        .mobile-nav-item {
+            margin-bottom: 15px;
+            transform: translateX(50px);
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+        
+        .mobile-menu.active .mobile-nav-item {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .mobile-menu.active .mobile-nav-item:nth-child(1) { transition-delay: 0.1s; }
+        .mobile-menu.active .mobile-nav-item:nth-child(2) { transition-delay: 0.15s; }
+        .mobile-menu.active .mobile-nav-item:nth-child(3) { transition-delay: 0.2s; }
+        .mobile-menu.active .mobile-nav-item:nth-child(4) { transition-delay: 0.25s; }
+        .mobile-menu.active .mobile-nav-item:nth-child(5) { transition-delay: 0.3s; }
+        .mobile-menu.active .mobile-nav-item:nth-child(6) { transition-delay: 0.35s; }
+        
+        .mobile-nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 15px 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .mobile-nav-link i {
+            margin-right: 15px;
+            font-size: 1.3rem;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .mobile-nav-link:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateX(10px);
+        }
+        
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Hero Section dengan Video YouTube */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-top: 70px;
+        }
+        
+        .youtube-video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .youtube-video {
+            width: 100vw;
+            height: 56.25vw;
+            min-height: 100vh;
+            min-width: 177.77vh;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: -1;
+        }
+        
+        .hero-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-content {
+            color: white;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero-title {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--gold-color);
+        }
+        
+        .hero-description {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: var(--gold-color);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .cta-button:hover {
+            background-color: #b8941f;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .hero-scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+        
+        .scroll-arrow {
+            width: 20px;
+            height: 20px;
+            border-right: 2px solid white;
+            border-bottom: 2px solid white;
+            transform: rotate(45deg);
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: rotate(45deg) translateY(0);
+            }
+            40% {
+                transform: rotate(45deg) translateY(-10px);
+            }
+            60% {
+                transform: rotate(45deg) translateY(-5px);
+            }
+        }
+        
+        /* Section Styling */
+        .section {
+            padding: 80px 0;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            position: relative;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 70px;
+            height: 3px;
+            background-color: var(--accent-color);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* About Section */
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+        
+        .about-text {
+            flex: 1;
+        }
+        
+        .about-description {
+            margin-bottom: 20px;
+        }
+        
+        .about-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            display: block;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+        
+        .about-image {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .profile-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        /* Skills Section - Diubah menjadi Program Unggulan dengan Slider GSAP */
+        .skills {
+            background-color: var(--light-color);
+            overflow: hidden;
+        }
+        
+        .skills-slider-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            margin: 0 auto;
+            perspective: 1000px;
+        }
+        
+        .skills-slider {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+        
+        .skill-slide {
+            position: absolute;
+            width: 300px;
+            height: 350px;
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0.7;
+        }
+        
+        .skill-slide.active {
+            opacity: 1;
+            z-index: 10;
+        }
+        
+        .skill-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .skill-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .skill-description {
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .slider-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 15px;
+        }
+        
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            opacity: 0.5;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .slider-dot.active {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+        
+        /* Gallery Section - Infinite Scroll Horizontal */
+        .gallery {
+            padding: 80px 0;
+            overflow: hidden;
+        }
+        
+        .gallery-row {
+            display: flex;
+            margin-bottom: 30px;
+            width: max-content;
+        }
+        
+        .gallery-row.top {
+            animation: scroll-right 40s linear infinite;
+        }
+        
+        .gallery-row.bottom {
+            animation: scroll-left 40s linear infinite;
+        }
+        
+        .gallery-item {
+            flex-shrink: 0;
+            width: 300px;
+            height: 200px;
+            margin-right: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        @keyframes scroll-right {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+        
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(-50%);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+        
+        /* Lightbox Styles */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .lightbox.active {
+            display: flex;
+        }
+        
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+        
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            padding: 0 20px;
+        }
+        
+        .lightbox-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+        }
+        
+        .lightbox-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+        
+        /* Testimonials Section - Cube Carousel */
+        .testimonials {
+            background-color: var(--light-color);
+            padding: 80px 0;
+            position: relative;
+        }
+        
+        .testimonials-carousel {
+            width: 100%;
+            max-width: 800px;
+            height: 400px;
+            margin: 0 auto;
+            perspective: 1000px;
+            position: relative;
+        }
+        
+        .carousel-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s ease;
+        }
+        
+        .testimonial-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .testimonial-slide.active {
+            opacity: 1;
+        }
+        
+        .testimonial-content {
+            position: relative;
+        }
+        
+        .testimonial-content::before {
+            content: '"';
+            font-size: 4rem;
+            color: var(--accent-color);
+            position: absolute;
+            top: -20px;
+            left: -10px;
+            opacity: 0.3;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        
+        .author-info h4 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .author-title {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+        
+        .carousel-controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 15px;
+        }
+        
+        .carousel-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-btn:hover {
+            background-color: var(--secondary-color);
+            transform: scale(1.1);
+        }
+        
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 10px;
+        }
+        
+        .carousel-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            opacity: 0.5;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-indicator.active {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+        
+        /* Contact Section dengan Maps */
+        .contact-content {
+            display: flex;
+            gap: 40px;
+        }
+        
+        .contact-info {
+            flex: 1;
+        }
+        
+        .contact-description {
+            margin-bottom: 30px;
+        }
+        
+        .contact-details {
+            margin-bottom: 30px;
+        }
+        
+        .contact-item {
+            margin-bottom: 20px;
+        }
+        
+        .contact-label {
+            display: block;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .contact-link, .contact-text {
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .contact-link:hover {
+            color: var(--primary-color);
+        }
+        
+        .route-button {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .route-button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        
+        .contact-map {
+            flex: 1;
+        }
+        
+        .map-container {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            height: 450px;
+        }
+        
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* WhatsApp Floating Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 60px;
+            height: 60px;
+            background-color: #25d366;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+        
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
+        
+        /* Footer Lengkap */
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 60px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .footer-logo-img {
+            height: 50px;
+            margin-right: 15px;
+        }
+        
+        .footer-about {
+            margin-bottom: 20px;
+            color: #bbb;
+            line-height: 1.6;
+        }
+        
+        .footer-heading {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .footer-heading::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--accent-color);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: #bbb;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .footer-links a i {
+            margin-right: 8px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            transform: translateY(-3px);
+            background-color: var(--accent-color);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #444;
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+        
+        /* Animasi */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            
+            .hamburger.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .hamburger.active .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+            
+            .hamburger.active .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .about-content, .contact-content {
+                flex-direction: column;
+            }
+            
+            .about-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .skills-slider-container {
+                height: 350px;
+            }
+            
+            .skill-slide {
+                width: 250px;
+                height: 300px;
+                padding: 20px;
+            }
+            
+            .gallery-item {
+                width: 250px;
+                height: 160px;
+            }
+            
+            .testimonials-carousel {
+                height: 450px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .skip-button {
+                bottom: 20px;
+                right: 20px;
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+            
+            .map-container {
+                height: 300px;
+            }
+            
+            .whatsapp-float {
+                width: 50px;
+                height: 50px;
+                font-size: 25px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen dengan Video Intro Fullscreen -->
+    <div id="loading-screen">
+        <video id="intro-video" autoplay muted>
+            <source src="intro-logo.mp4" type="video/mp4">
+            Browser Anda tidak mendukung video tag.
+        </video>
+        <button class="skip-button" id="skip-button">Lewati Intro</button>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="nav-logo">
+                <img src="Adobe Express - file.png" alt="LTQ TA'LIM MUBTADI 2" class="nav-logo-img">
+                LTQ TA'LIM MUBTADI 2
+            </a>
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link"><i class="fas fa-home"></i> Beranda</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#about" class="nav-link"><i class="fas fa-info-circle"></i> Profil</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#skills" class="nav-link"><i class="fas fa-book"></i> Program</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#gallery" class="nav-link"><i class="fas fa-images"></i> Galeri</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#testimonials" class="nav-link"><i class="fas fa-comments"></i> Testimoni</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#contact" class="nav-link"><i class="fas fa-map-marker-alt"></i> Kontak</a>
+                </li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu dengan Gooey Effect -->
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="mobile-nav-item">
+            <a href="#home" class="mobile-nav-link">
+                <i class="fas fa-home"></i>
+                <span>Beranda</span>
+            </a>
+        </div>
+        <div class="mobile-nav-item">
+            <a href="#about" class="mobile-nav-link">
+                <i class="fas fa-info-circle"></i>
+                <span>Profil</span>
+            </a>
+        </div>
+        <div class="mobile-nav-item">
+            <a href="#skills" class="mobile-nav-link">
+                <i class="fas fa-book"></i>
+                <span>Program</span>
+            </a>
+        </div>
+        <div class="mobile-nav-item">
+            <a href="#gallery" class="mobile-nav-link">
+                <i class="fas fa-images"></i>
+                <span>Galeri</span>
+            </a>
+        </div>
+        <div class="mobile-nav-item">
+            <a href="#testimonials" class="mobile-nav-link">
+                <i class="fas fa-comments"></i>
+                <span>Testimoni</span>
+            </a>
+        </div>
+        <div class="mobile-nav-item">
+            <a href="#contact" class="mobile-nav-link">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Kontak</span>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Overlay untuk mobile menu -->
+    <div class="menu-overlay" id="menu-overlay"></div>
+
+    <!-- Hero Section dengan Video YouTube -->
+    <section id="home" class="hero">
+        <div class="youtube-video-container">
+            <iframe 
+                class="youtube-video"
+                src="https://www.youtube.com/embed/IdnFvb3w2DE?si=SUgXNuBN2csjC3ap&autoplay=1&mute=1&loop=1&playlist=IdnFvb3w2DE&controls=0&showinfo=0&rel=0&modestbranding=1&disablekb=1" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-container">
+            <div class="hero-content fade-in">
+                <h1 class="hero-title">LTQ TA'LIM MUBTADI 2</h1>
+                <p class="hero-subtitle">Lembaga Tahfidz Al-Qur'an untuk Pemula</p>
+                <p class="hero-description">Membentuk generasi Qur'ani melalui pembelajaran Al-Qur'an yang menyenangkan dan bermakna bagi anak-anak dan pemula.</p>
+                <a href="#about" class="cta-button">Pelajari Lebih Lanjut</a>
+            </div>
+        </div>
+        <div class="hero-scroll-indicator">
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about section">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text fade-in">
+                    <h2 class="section-title">Tentang Kami</h2>
+                    <p class="about-description">
+                        Visi
+                            Mewujudkan generasi yang cinta Al-Quran, mampu membaca dengan tartil, serta berakhlak mulia melalui pembelajaran yang sistematis, menyenangkan, dan sesuai kaidah Metode Tilawati.
+                    </p>
+                    <p class="about-description">
+                        Misi
+                         Menyelenggarakan pembelajaran Al-Qur'an yang berstandar Tilawati dengan memperhatikan ketepatan makhraj, tajwid, dan irama baca.
+                         Mengembangkan suasana belajar yang aktif, disiplin, dan menyenangkan sesuai karakteristik metode Tilawati.
+                         Membina guru dan pembimbing Al-Qur'an agar profesional, sabar, dan kompeten dalam mengajarkan Tilawati.
+                         Menanamkan kecintaan terhadap Al-Quran melalui kegiatan tilawah, murajaah, dan pembiasaan ibadah dalam kehidupan sehari-hari.
+                    </p>
+                    <div class="about-stats">
+                        <div class="stat">
+                            <span class="stat-number" data-target="20">0</span>
+                            <span class="stat-label">Santri Aktif</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number" data-target="5">0</span>
+                            <span class="stat-label">Tahun pengajar berpengalaman</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number" data-target="3">0</span>
+                            <span class="stat-label">Pengajar Berkompeten</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image fade-in">
+                    <img src="image-profil.jpeg" alt="Kegiatan Belajar di LTQ" class="profile-image">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section - Diubah menjadi Program Unggulan dengan Slider GSAP -->
+    <section id="skills" class="skills section">
+        <div class="container">
+            <h2 class="section-title fade-in">Program Unggulan</h2>
+            <div class="skills-slider-container">
+                <div class="skills-slider" id="skills-slider">
+                    <div class="skill-slide active">
+                        <div class="skill-icon">📖</div>
+                        <h3 class="skill-title">Tahsin & Tartil</h3>
+                        <p class="skill-description">Pembenaran bacaan Al-Qur'an sesuai tajwid dan makhraj yang benar untuk pemula</p>
+                    </div>
+                    <div class="skill-slide">
+                        <div class="skill-icon">🧠</div>
+                        <h3 class="skill-title">Tahfizh Al-Qur'an</h3>
+                        <p class="skill-description">Program menghafal Al-Qur'an dengan metode yang mudah dan efektif</p>
+                    </div>
+                    <div class="skill-slide">
+                        <div class="skill-icon">👶</div>
+                        <h3 class="skill-title">Program Anak</h3>
+                        <p class="skill-description">Khusus untuk anak usia dini dengan metode belajar yang menyenangkan</p>
+                    </div>
+                    <div class="skill-slide">
+                        <div class="skill-icon">🕌</div>
+                        <h3 class="skill-title">Pendidikan Agama</h3>
+                        <p class="skill-description">Pembelajaran akidah, akhlak, dan fiqih dasar sesuai usia</p>
+                    </div>
+                    <div class="skill-slide">
+                        <div class="skill-icon">🎨</div>
+                        <h3 class="skill-title">Kegiatan Kreatif</h3>
+                        <p class="skill-description">Aneka kegiatan seni dan kreativitas bernuansa Islami</p>
+                    </div>
+                    <div class="skill-slide">
+                        <div class="skill-icon">👨‍👩‍👧‍👦</div>
+                        <h3 class="skill-title">Program Keluarga</h3>
+                        <p class="skill-description">Kegiatan yang melibatkan orang tua dalam pendidikan anak</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slider-nav" id="slider-nav">
+                <div class="slider-dot active" data-index="0"></div>
+                <div class="slider-dot" data-index="1"></div>
+                <div class="slider-dot" data-index="2"></div>
+                <div class="slider-dot" data-index="3"></div>
+                <div class="slider-dot" data-index="4"></div>
+                <div class="slider-dot" data-index="5"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section - Infinite Scroll Horizontal -->
+    <section id="gallery" class="gallery section">
+        <div class="container">
+            <h2 class="section-title fade-in">Galeri Kegiatan</h2>
+            
+            <!-- Baris atas - animasi ke kanan -->
+            <div class="gallery-row top">
+                <div class="gallery-item">
+                    <img src="image-galery-kegiatan.jpeg" alt="Sesi Belajar Tahsin" data-index="0">
+                </div>
+                <div class="gallery-item">
+                    <img src="image-galery-kegiatan2.jpeg" alt="Peringatan Maulid Nabi" data-index="1">
+                </div>
+                <div class="gallery-item">
+                    <img src="image-galery-kegiatan3.jpeg" alt="Wisuda Tahfizh" data-index="2">
+                </div>
+                <div class="gallery-item">
+                    <img src="galery-kegiatan4.jpeg" alt="Kelas Kreatif Anak" data-index="3">
+                </div>
+                
+                <!-- Duplikat untuk infinite scroll -->
+                <div class="gallery-item">
+                    <img src="image-galery-kegiatan.jpeg" alt="Sesi Belajar Tahsin" data-index="0">
+                </div>
+                <div class="gallery-item">
+                    <img src="image-galery-kegiatan2.jpeg" alt="Peringatan Maulid Nabi" data-index="1">
+                </div>
+                <div class="gallery-item">
+                    <img src="image-galery-kegiatan3.jpeg" alt="Wisuda Tahfizh" data-index="2">
+                </div>
+                <div class="gallery-item">
+                    <img src="galery-kegiatan4.jpeg" alt="Kelas Kreatif Anak" data-index="3">
+                </div>
+            </div>
+            
+            <!-- Baris bawah - animasi ke kiri -->
+            <div class="gallery-row bottom">
+                <div class="gallery-item">
+                    <img src="galery-kegiatan5.jpeg" alt="Outbound Islami" data-index="4">
+                </div>
+                <div class="gallery-item">
+                    <img src="galery-kegiatan6.jpeg" alt="Lomba MTQ" data-index="5">
+                </div>
+                <div class="gallery-item">
+                    <img src="galery-kegiatan7.jpeg" alt="Belajar Kelompok" data-index="6">
+                </div>
+                <div class="gallery-item">
+                    <img src="galery-kegiatan8.jpeg" alt="Kegiatan Outdoor" data-index="7">
+                </div>
+                
+                <!-- Duplikat untuk infinite scroll -->
+                <div class="gallery-item">
+                    <img src="galery-kegiatan5.jpeg" alt="Outbound Islami" data-index="4">
+                </div>
+                <div class="gallery-item">
+                    <img src="galery-kegiatan6.jpeg" alt="Lomba MTQ" data-index="5">
+                </div>
+                <div class="gallery-item">
+                    <img src="galery-kegiatan7.jpeg" alt="Belajar Kelompok" data-index="6">
+                </div>
+                <div class="gallery-item">
+                    <img src="galery-kegiatan8.jpeg" alt="Kegiatan Outdoor" data-index="7">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox untuk Galeri -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close" id="lightbox-close">&times;</button>
+            <img class="lightbox-img" id="lightbox-img" src="" alt="">
+            <div class="lightbox-nav">
+                <button class="lightbox-btn" id="lightbox-prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="lightbox-btn" id="lightbox-next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonials Section - Cube Carousel -->
+    <section id="testimonials" class="testimonials section">
+        <div class="container">
+            <h2 class="section-title fade-in">Testimoni Orang Tua</h2>
+            <div class="testimonials-carousel">
+                <div class="carousel-container" id="carousel-container">
+                    <div class="testimonial-slide active">
+                        <div class="testimonial-content">
+                            <p class="testimonial-text">"Anak saya yang sebelumnya sulit belajar mengaji, sekarang sangat antusias datang ke LTQ. Metode pengajarannya menyenangkan dan pengajarnya sangat sabar."</p>
+                            <div class="testimonial-author">
+                                <img src="testimoni-orangtua.jpeg" alt="Ibu Sari" class="author-image">
+                                <div class="author-info">
+                                    <h4 class="author-name">Ibu Sari</h4>
+                                    <p class="author-title">Orang Tua Santri</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="testimonial-content">
+                            <p class="testimonial-text">"Alhamdulillah, anak saya sudah bisa membaca Al-Qur'an dengan lancar dan benar setelah belajar di LTQ TA'LIM MUBTADI 2. Terima kasih kepada para ustadz/ustadzah yang sabar mengajar."</p>
+                            <div class="testimonial-author">
+                                <img src="testimoni-orangtua3.jpeg" alt="Budi Santoso" class="author-image">
+                                <div class="author-info">
+                                    <h4 class="author-name">Budi Santoso</h4>
+                                    <p class="author-title">Orang Tua Santri</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="testimonial-content">
+                            <p class="testimonial-text">"Saya sangat merekomendasikan LTQ ini untuk anak-anak yang ingin belajar mengaji. Lingkungannya nyaman, pengajarnya kompeten, dan biayanya terjangkau."</p>
+                            <div class="testimonial-author">
+                                <img src="testimoni-orangtua2.jpeg" alt="Dewi Lestari" class="author-image">
+                                <div class="author-info">
+                                    <h4 class="author-name">Dewi Lestari</h4>
+                                    <p class="author-title">Wali Santri</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-controls">
+                    <button class="carousel-btn" id="prev-btn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="carousel-btn" id="next-btn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="carousel-indicators">
+                    <div class="carousel-indicator active" data-index="0"></div>
+                    <div class="carousel-indicator" data-index="1"></div>
+                    <div class="carousel-indicator" data-index="2"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section dengan Maps -->
+    <section id="contact" class="contact section">
+        <div class="container">
+            <h2 class="section-title fade-in">Lokasi Kami</h2>
+            <div class="contact-content">
+                <div class="contact-info fade-in">
+                    <p class="contact-description">
+                        Kunjungi lembaga kami untuk informasi lebih lanjut tentang program pembelajaran atau untuk mendaftarkan putra-putri Anda.
+                    </p>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <span class="contact-label">Alamat</span>
+                            <p class="contact-text">Gg. Crystal, RT.003/RW.003, Cipondoh, Kec. Cipondoh, Kota Tangerang, Banten 15148</p>
+                            <a href="https://maps.google.com/?q=LTQ+TA'LIM+MUBTADI+2" target="_blank" class="route-button">
+                                <i class="fas fa-route"></i> Dapatkan Rute
+                            </a>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-label">Telepon</span>
+                            <a href="tel:+62895382186560" class="contact-link">(+62) 895-3821-86560</a>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-label">Email</span>
+                            <a href="mailto:uddinakmal124@gmail.com" class="contact-link">uddinakmal124@gmail.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-label">Jam Operasional</span>
+                            <p class="contact-text">Senin - kamis: 16:00 - 17:00<br>Sabtu: 08:00 - 14:00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-map fade-in">
+                    <div class="map-container">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.5886158379044!2d106.6774169!3d-6.1857712!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f99fd0369011%3A0xb530b057262f7dd6!2sLTQ%20TA%27LIM%20MUBTADI%202!5e0!3m2!1sid!2sid!4v1763991067056!5m2!1sid!2sid" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Lengkap -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <img src="Adobe Express - file.png" alt="LTQ TA'LIM MUBTADI 2" class="footer-logo-img">
+                        <h3>LTQ TA'LIM MUBTADI 2</h3>
+                    </div>
+                    <p class="footer-about">
+                        Lembaga Tahfidz dan Pembelajaran Al-Qur'an untuk Pemula yang berkomitmen membentuk generasi Qur'ani melalui pendidikan Islami yang berkualitas.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" class="social-link" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-link" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links-container">
+                    <h4 class="footer-heading">Menu Utama</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home"><i class="fas fa-home"></i> Beranda</a></li>
+                        <li><a href="#about"><i class="fas fa-info-circle"></i> Profil</a></li>
+                        <li><a href="#skills"><i class="fas fa-book"></i> Program</a></li>
+                        <li><a href="#gallery"><i class="fas fa-images"></i> Galeri</a></li>
+                        <li><a href="#testimonials"><i class="fas fa-comments"></i> Testimoni</a></li>
+                        <li><a href="#contact"><i class="fas fa-map-marker-alt"></i> Lokasi</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links-container">
+                    <h4 class="footer-heading">Program</h4>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-quran"></i> Tahsin & Tartil</a></li>
+                        <li><a href="#"><i class="fas fa-brain"></i> Tahfizh Al-Qur'an</a></li>
+                        <li><a href="#"><i class="fas fa-child"></i> Program Anak</a></li>
+                        <li><a href="#"><i class="fas fa-mosque"></i> Pendidikan Agama</a></li>
+                        <li><a href="#"><i class="fas fa-palette"></i> Kegiatan Kreatif</a></li>
+                        <li><a href="#"><i class="fas fa-users"></i> Program Keluarga</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links-container">
+                    <h4 class="footer-heading">Kontak</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://maps.google.com/?q=LTQ+TA'LIM+MUBTADI+2" target="_blank"><i class="fas fa-map-marker-alt"></i> Jl. Pendidikan No. 123</a></li>
+                        <li><a href="tel:+62895382186560"><i class="fas fa-phone"></i> (+62) 895-3821-86560</a></li>
+                        <li><a href="uddinakmal124@gmail.com"><i class="fas fa-envelope"></i> uddinakmal124@gmail.com</a></li>
+                        <li><a href="#"><i class="fas fa-clock"></i> Senin-kamis: 16:00-17:00</a></li>
+                        <li><a href="#"><i class="fas fa-clock"></i> Sabtu: 08:00-14:00</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 LTQ TA'LIM MUBTADI 2. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/62895382186560?text=Halo,%20saya%20ingin%20bertanya%20tentang%20LTQ%20TA'LIM%20MUBTADI%202" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // Video Intro Functionality
+        const loadingScreen = document.getElementById('loading-screen');
+        const introVideo = document.getElementById('intro-video');
+        const skipButton = document.getElementById('skip-button');
+        
+        // Default video source
+        introVideo.src = "intro-logo.mp4";
+        
+        // Skip intro button
+        skipButton.addEventListener('click', () => {
+            hideLoadingScreen();
+        });
+        
+        // Auto hide loading screen when video ends
+        introVideo.addEventListener('ended', () => {
+            hideLoadingScreen();
+        });
+        
+        function hideLoadingScreen() {
+            loadingScreen.style.opacity = '0';
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+            }, 500);
+        }
+        
+        // Mobile Menu Functionality
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuOverlay = document.getElementById('menu-overlay');
+        
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        });
+        
+        menuOverlay.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            menuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.mobile-nav-link').forEach(n => n.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            menuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }));
+
+        // Smooth scrolling untuk navigasi
+        document.querySelectorAll('nav a, .footer-links a, .mobile-nav-link').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                if (this.getAttribute('href').startsWith('#')) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+        
+        // Scroll animation
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const fadeInOnScroll = () => {
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', fadeInOnScroll);
+        fadeInOnScroll(); // Jalankan sekali saat halaman dimuat
+        
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.style.padding = '0.5rem 0';
+                navbar.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+            } else {
+                navbar.style.padding = '1rem 0';
+                navbar.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+            }
+        });
+
+        // Counter Animation untuk Statistik
+        function animateCounter(element, target, duration = 2000) {
+            let start = 0;
+            const increment = target / (duration / 16);
+            const timer = setInterval(() => {
+                start += increment;
+                if (start >= target) {
+                    element.textContent = target + "+";
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(start);
+                }
+            }, 16);
+        }
+
+        // Inisialisasi counter saat section terlihat
+        const statNumbers = document.querySelectorAll('.stat-number');
+        let statsAnimated = false;
+
+        function checkStatsVisibility() {
+            const statsSection = document.querySelector('.about-stats');
+            if (!statsSection || statsAnimated) return;
+            
+            const sectionTop = statsSection.getBoundingClientRect().top;
+            const sectionVisible = 150;
+            
+            if (sectionTop < window.innerHeight - sectionVisible) {
+                statNumbers.forEach(stat => {
+                    const target = parseInt(stat.getAttribute('data-target'));
+                    animateCounter(stat, target);
+                });
+                statsAnimated = true;
+            }
+        }
+
+        window.addEventListener('scroll', checkStatsVisibility);
+        checkStatsVisibility(); // Check saat halaman dimuat
+
+        // Program Unggulan Slider dengan GSAP - Diubah menjadi 3 detik
+        const skillSlides = document.querySelectorAll('.skill-slide');
+        const sliderDots = document.querySelectorAll('.slider-dot');
+        let currentSlide = 0;
+        
+        // Inisialisasi GSAP untuk slider
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Animasi untuk skill slider
+        function initSkillSlider() {
+            // Set initial positions
+            gsap.set(skillSlides, {
+                x: (i) => (i - currentSlide) * 350,
+                scale: (i) => i === currentSlide ? 1 : 0.8,
+                opacity: (i) => i === currentSlide ? 1 : 0.7,
+                zIndex: (i) => i === currentSlide ? 10 : 1
+            });
+            
+            // Auto slide every 3 seconds (changed from 5 seconds)
+            setInterval(() => {
+                nextSlide();
+            }, 3000);
+        }
+        
+        function goToSlide(index) {
+            currentSlide = index;
+            
+            // Update dots
+            sliderDots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
+            });
+            
+            // Animate slides
+            gsap.to(skillSlides, {
+                duration: 0.8,
+                x: (i) => (i - currentSlide) * 350,
+                scale: (i) => i === currentSlide ? 1 : 0.8,
+                opacity: (i) => i === currentSlide ? 1 : 0.7,
+                zIndex: (i) => i === currentSlide ? 10 : 1,
+                ease: "power2.out"
+            });
+        }
+        
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % skillSlides.length;
+            goToSlide(currentSlide);
+        }
+        
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + skillSlides.length) % skillSlides.length;
+            goToSlide(currentSlide);
+        }
+        
+        // Add click events to dots
+        sliderDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                goToSlide(index);
+            });
+        });
+        
+        // Initialize slider
+        initSkillSlider();
+        
+        // Testimonial Carousel
+        const testimonialSlides = document.querySelectorAll('.testimonial-slide');
+        const carouselIndicators = document.querySelectorAll('.carousel-indicator');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        let currentTestimonial = 0;
+        let autoSlideInterval;
+        
+        function initTestimonialCarousel() {
+            // Set initial state
+            updateTestimonialCarousel();
+            
+            // Start auto slide
+            startAutoSlide();
+            
+            // Pause auto slide on hover
+            const carouselContainer = document.getElementById('carousel-container');
+            carouselContainer.addEventListener('mouseenter', () => {
+                clearInterval(autoSlideInterval);
+            });
+            
+            carouselContainer.addEventListener('mouseleave', () => {
+                startAutoSlide();
+            });
+        }
+        
+        function updateTestimonialCarousel() {
+            // Update slides
+            testimonialSlides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentTestimonial);
+            });
+            
+            // Update indicators
+            carouselIndicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentTestimonial);
+            });
+        }
+        
+        function goToTestimonial(index) {
+            currentTestimonial = index;
+            updateTestimonialCarousel();
+        }
+        
+        function nextTestimonial() {
+            currentTestimonial = (currentTestimonial + 1) % testimonialSlides.length;
+            updateTestimonialCarousel();
+        }
+        
+        function prevTestimonial() {
+            currentTestimonial = (currentTestimonial - 1 + testimonialSlides.length) % testimonialSlides.length;
+            updateTestimonialCarousel();
+        }
+        
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(() => {
+                nextTestimonial();
+            }, 3000);
+        }
+        
+        // Add event listeners
+        prevBtn.addEventListener('click', () => {
+            prevTestimonial();
+            // Reset auto slide timer
+            clearInterval(autoSlideInterval);
+            startAutoSlide();
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            nextTestimonial();
+            // Reset auto slide timer
+            clearInterval(autoSlideInterval);
+            startAutoSlide();
+        });
+        
+        carouselIndicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                goToTestimonial(index);
+                // Reset auto slide timer
+                clearInterval(autoSlideInterval);
+                startAutoSlide();
+            });
+        });
+        
+        // Initialize testimonial carousel
+        initTestimonialCarousel();
+
+        // Lightbox Functionality
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxClose = document.getElementById('lightbox-close');
+        const lightboxPrev = document.getElementById('lightbox-prev');
+        const lightboxNext = document.getElementById('lightbox-next');
+        const galleryItems = document.querySelectorAll('.gallery-item img');
+        
+        // Array untuk menyimpan semua gambar galeri
+        const galleryImages = Array.from(galleryItems).map(item => ({
+            src: item.src,
+            alt: item.alt
+        }));
+        
+        let currentImageIndex = 0;
+        
+        // Buka lightbox saat gambar diklik
+        galleryItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                currentImageIndex = parseInt(item.getAttribute('data-index'));
+                openLightbox(currentImageIndex);
+            });
+        });
+        
+        function openLightbox(index) {
+            lightboxImg.src = galleryImages[index].src;
+            lightboxImg.alt = galleryImages[index].alt;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        function showNextImage() {
+            currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+            openLightbox(currentImageIndex);
+        }
+        
+        function showPrevImage() {
+            currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+            openLightbox(currentImageIndex);
+        }
+        
+        // Event listeners untuk lightbox
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightboxNext.addEventListener('click', showNextImage);
+        lightboxPrev.addEventListener('click', showPrevImage);
+        
+        // Tutup lightbox saat mengklik di luar gambar
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+        
+        // Navigasi dengan keyboard
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            
+            if (e.key === 'Escape') {
+                closeLightbox();
+            } else if (e.key === 'ArrowRight') {
+                showNextImage();
+            } else if (e.key === 'ArrowLeft') {
+                showPrevImage();
+            }
+        });
+    </script>
+</body>
+</html>
